@@ -30,6 +30,9 @@ else
   MAKE_FLAGS = CC='$(CC)' LL='$(LL)' ALL_CFLAGS='$(ALL_CFLAGS)'
 endif
 
+TARGET_CC = $(CC)
+android: TARGET_CC=arm-linux-androideabi-gcc
+
 # mruby compiler
 ifeq ($(OS),Windows_NT)
 MRBC = ../bin/mrbc.exe
@@ -40,13 +43,15 @@ endif
 ##############################
 # generic build targets, rules
 
+.PHONY : android
+android : all
 .PHONY : all
 all : $(MRBC) $(MLIB)
 	@echo "make: built targets of `pwd`"
 
 # Compile mrblib source
 $(MLIB) : $(CLIB)
-	$(CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $(CLIB) -o $(MLIB)
+	$(TARGET_CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $(CLIB) -o $(MLIB)
 
 # Compile C source from merged mruby source
 $(CLIB) : $(RLIB) $(MRBC)

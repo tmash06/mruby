@@ -28,13 +28,17 @@ LL = gcc
 AR = ar
 YACC = bison
 
+TARGET_CC = $(CC)
+TARGET_LL = $(LL)
+TARGET_CFLAGS =
+
 DEBUG_MODE = 1
 ifeq ($(DEBUG_MODE),1)
 CFLAGS = -g -O3
 else
 CFLAGS = -O3
 endif
-ALL_CFLAGS = -Wall -Werror-implicit-function-declaration $(CFLAGS)
+ALL_CFLAGS = -Wall -Werror-implicit-function-declaration $(CFLAGS) $(TARGET_CFLAGS)
 
 ##############################
 # generic build targets, rules
@@ -51,11 +55,11 @@ $(LIB) : $(OBJS) $(OBJY)
 
 # objects compiled from source
 $(OBJS) : %.o : %.c
-	$(CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $< -o $@
+	$(TARGET_CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $< -o $@
 
 # parser complie
 $(OBJY) : $(YC)
-	$(CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $(YC) -o $(OBJY)
+	$(TARGET_CC) $(ALL_CFLAGS) -MMD $(INCLUDES) -c $(YC) -o $(OBJY)
 
 # yacc complie
 $(YC) : $(YSRC)
