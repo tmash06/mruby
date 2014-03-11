@@ -6,6 +6,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "mruby.h"
 #include "mruby/array.h"
 #include "mruby/class.h"
